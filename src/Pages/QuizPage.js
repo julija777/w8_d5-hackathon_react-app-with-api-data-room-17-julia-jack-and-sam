@@ -84,22 +84,20 @@ function QuizPage() {
   }
 
   return (
-    <div class="container">
-      <main class="page">
-        <h1>
-          Question {currentQuestionIndex + 1} of {questions.length}:{" "}
-          {decodeString(currentQuestion.question)}
-        </h1>
-        <div class="buttons">
-          <button class="button" onClick={() => addAnswer(true)}>
-            True
-          </button>
-          <button class="button" onClick={() => addAnswer(false)}>
-            False
-          </button>
-        </div>
-      </main>
-    </div>
+    <Layout
+      title={`Question ${currentQuestionIndex + 1} of ${
+        questions.length
+      } : ${decodeString(currentQuestion.question)}`}
+    >
+      <div class="buttons">
+        <button class="button" onClick={() => addAnswer(true)}>
+          True
+        </button>
+        <button class="button" onClick={() => addAnswer(false)}>
+          False
+        </button>
+      </div>
+    </Layout>
   );
 }
 

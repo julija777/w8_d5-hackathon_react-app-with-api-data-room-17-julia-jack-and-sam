@@ -1,17 +1,15 @@
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 function HomePage() {
   return (
-    <div class="container">
-      <main class="page">
-        <h1>Click the button to get started!</h1>
-        <div class="buttons">
-          <Link to="/quiz">
-            <button className="button">Start quiz</button>
-          </Link>
-        </div>
-      </main>
-    </div>
+    <Layout title="Click the button to get started!">
+      <div class="buttons">
+        <Link to="/quiz">
+          <button className="button">Start quiz</button>
+        </Link>
+      </div>
+    </Layout>
   );
 }
 
