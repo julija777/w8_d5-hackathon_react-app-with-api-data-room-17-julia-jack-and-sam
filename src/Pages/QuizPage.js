@@ -67,7 +67,7 @@ function QuizPage() {
     <Question
       question={currentQuestion}
       questionCount={questions.length}
-      questionNumer={currentQuestionIndex + 1}
+      questionNumber={currentQuestionIndex + 1}
       addAnswer={addAnswer}
     />
   );
