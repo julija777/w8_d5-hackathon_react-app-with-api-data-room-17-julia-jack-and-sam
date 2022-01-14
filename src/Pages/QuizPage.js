@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
+import Question from "../components/Question";
+import Results from "../components/Results";
 
 function QuizPage() {
   const [questions, setQuestions] = useState();
@@ -10,6 +11,7 @@ function QuizPage() {
   const currentQuestionIndex = answers.length;
   const currentQuestion = questions?.[currentQuestionIndex];
 
+  // Fetch questions on mount
   useEffect(() => {
     async function updateQuestions() {
       const result = await fetch(
@@ -23,6 +25,7 @@ function QuizPage() {
     updateQuestions();
   }, []);
 
+  // Update score as answers state changes
   useEffect(() => {
     const reducer = (acc, userAnswer, index) => {
       const question = questions[index];
@@ -41,12 +44,6 @@ function QuizPage() {
     return correctAnswer;
   }
 
-  function decodeString(str) {
-    const element = document.createElement("div");
-    element.innerHTML = str;
-    return element.textContent;
-  }
-
   function addAnswer(answer) {
     setAnswers((oldAnswers) => [...oldAnswers, answer]);
   }
@@ -57,47 +54,22 @@ function QuizPage() {
 
   if (currentQuestionIndex > questions.length - 1) {
     return (
-      <Layout
-        title={`
-      ${score} of ${questions.length} correct!`}
-      >
-        <ol>
-          {questions.map((question, index) => (
-            <li
-              className={
-                getCorrectAnswer(question) === answers[index]
-                  ? "correct"
-                  : "incorrect"
-              }
-            >
-              {decodeString(question.question)}
-            </li>
-          ))}
-        </ol>
-        <div class="buttons">
-          <Link to="/">
-            <button class="button">Back to home</button>
-          </Link>
-        </div>
-      </Layout>
+      <Results
+        score={score}
+        questions={questions}
+        answers={answers}
+        getCorrectAnswer={getCorrectAnswer}
+      />
     );
   }
 
   return (
-    <Layout
-      title={`Question ${currentQuestionIndex + 1} of ${
-        questions.length
-      } : ${decodeString(currentQuestion.question)}`}
-    >
-      <div class="buttons">
-        <button class="button" onClick={() => addAnswer(true)}>
-          True
-        </button>
-        <button class="button" onClick={() => addAnswer(false)}>
-          False
-        </button>
-      </div>
-    </Layout>
+    <Question
+      question={currentQuestion}
+      questionCount={questions.length}
+      questionNumer={currentQuestionIndex + 1}
+      addAnswer={addAnswer}
+    />
   );
 }
 
