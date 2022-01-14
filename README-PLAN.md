@@ -1,3 +1,5 @@
+-- INITIAL PLAN
+
 -- STRETCH GOALS
 Time limit for each question
 

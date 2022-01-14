@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 function QuizPage() {
   const [questions, setQuestions] = useState();
@@ -24,15 +25,21 @@ function QuizPage() {
 
   useEffect(() => {
     const reducer = (acc, userAnswer, index) => {
-      const correctAnswerString = questions[index].correct_answer;
-      const correctAnswer = correctAnswerString === "True" ? true : false;
+      const question = questions[index];
+      const correctAnswer = getCorrectAnswer(question);
 
       return correctAnswer === userAnswer ? acc + 1 : acc;
     };
 
     const newScore = answers.reduce(reducer, 0);
     setScore(newScore);
-  }, [answers]);
+  }, [answers, questions]);
+
+  function getCorrectAnswer(question) {
+    const correctAnswerString = question.correct_answer;
+    const correctAnswer = correctAnswerString === "True" ? true : false;
+    return correctAnswer;
+  }
 
   function decodeString(str) {
     const element = document.createElement("div");
@@ -45,38 +52,55 @@ function QuizPage() {
   }
 
   if (!questions) {
-    return <main>...loading!</main>;
+    return <Layout title="Loading..." />;
   }
 
   if (currentQuestionIndex > questions.length - 1) {
-    // score with conditional message
-    // correct and incorrect answers
-
     return (
-      <main>
-        <h2>
-          {score} of {questions.length} correct!
-        </h2>
-        <ol>{questions.map( => {
-        
-        })} </ol>
-        <Link to="/">
-          <button>Back to home</button>
-        </Link>
-      </main>
+      <Layout
+        title={`
+      ${score} of ${questions.length} correct!`}
+      >
+        <ol>
+          {questions.map((question, index) => (
+            <li
+              className={
+                getCorrectAnswer(question) === answers[index]
+                  ? "correct"
+                  : "incorrect"
+              }
+            >
+              {decodeString(question.question)}
+            </li>
+          ))}
+        </ol>
+        <div class="buttons">
+          <Link to="/">
+            <button class="button">Back to home</button>
+          </Link>
+        </div>
+      </Layout>
     );
   }
 
   return (
-    <main>
-      <h2>
-        Question {currentQuestionIndex + 1} of {questions.length}:{" "}
-        {decodeString(currentQuestion.question)}
-      </h2>
-      <button onClick={() => addAnswer(true)}>True</button>
-      <button onClick={() => addAnswer(false)}>False</button>
-    </main>
-  )
+    <div class="container">
+      <main class="page">
+        <h1>
+          Question {currentQuestionIndex + 1} of {questions.length}:{" "}
+          {decodeString(currentQuestion.question)}
+        </h1>
+        <div class="buttons">
+          <button class="button" onClick={() => addAnswer(true)}>
+            True
+          </button>
+          <button class="button" onClick={() => addAnswer(false)}>
+            False
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 }
 
 export default QuizPage;
