@@ -11,4 +11,4 @@ number of questions
 - Implement react router
 
 
-The earliest deployment is in here: https://app.netlify.com/sites/greatestquizroom17 
+The earliest deployment is in here: https://greatestquizroom17.netlify.app/
